@@ -1,5 +1,5 @@
 ---
-title: "crear pagina web"
+title: "pagina web"
 author: "Elda Perez"
 format:
   html:
@@ -78,66 +78,5 @@ The `echo: false` option disables the printing of code (only output is displayed
 
 1.  Activar GitHub Pages
 
-# importar archivo
 
-```{r}
-source('https://inkaverse.com/setup.r')
-url <- "https://docs.google.com/spreadsheets/d/15r7ZwcZZHbEgltlF6gSFvCTFA-CFzVBWwg3mFlRyKPs/edit?gid=172957346#gid=172957346"
-gs <- url %>% 
-  as_sheets_id()
-fb <- gs %>% 
-  range_read("fb")
-str(fb)
-```
-## MODELO LINEAL
-```{r}
-modelo <- aov(formula = lfa ~ bloque + riego + geno + riego*geno
-              ,data = fb)
-anova(modelo)
-plot(modelo)
-```
-### box plot
-```{r}
-ggplot(fb, aes(x = geno, y = lfa, colour = riego)) +
-  geom_boxplot(outlier.colour = "red" , outlier.shape = 16, outlier.size = 2) +
-  labs(title = "boxplot con interacción de niveles de riego y genotipo" , 
-       x = "Interacción Riego y Genotipo",
-       y = "Valor de la variable respuesta") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))  #Inclinar etiquetas del eje x
-```
-#### modelo lineal para hi
-```{r}
-modelo <- aov(formula = hi ~ bloque + riego + geno + riego*geno
-              ,data = fb)
-anova(modelo)
-plot(modelo)
-```
-#### box plot para hi
-```{r}
-ggplot(fb, aes(x = geno, y = hi, colour = riego)) +
-  geom_boxplot(outlier.colour = "red" , outlier.shape = 16, outlier.size = 2) +
-  labs(title = "boxplot con interacción de niveles de riego y genotipo" , 
-       x = "Interacción Riego y Genotipo",
-       y = "Valor de la variable respuesta") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))  #Inclinar etiquetas del eje x
-```
-###### modelos lineales mixtos para lfa
-```{r}
-library(lme4)
-modelo <- lme4::lmer(formula = lfa ~ riego + geno + riego*geno + (1|bloque)
-              ,data = fb)
-anova(modelo)
-plot(modelo)
-
-ol <- boxplot(lfa~riego*geno, fb)
-ol
-library(inti)
-model <- remove_outliers(data = fb
-                         ,formula = lfa ~ riego + geno + riego*geno + (1|bloque)
-              ,plot_diag = T
-              )
-model
-```
 
